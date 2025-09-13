@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Event Detection System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <h1>Video Event Detection System</h1>
+            <p class="header__description">Upload a video and detect specific events with AI-powered analysis</p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <!-- Upload Section -->
+            <section class="upload-section card">
+                <div class="card__body">
+                    <h2>Upload Video</h2>
+                    <div class="upload-area" id="uploadArea">
+                        <div class="upload-area__content">
+                            <svg class="upload-icon" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="17 8 12 3 7 8"></polyline>
+                                <line x1="12" y1="3" x2="12" y2="15"></line>
+                            </svg>
+                            <p class="upload-text">Drag and drop your video here</p>
+                            <p class="upload-subtext">or <button type="button" class="upload-browse-btn">browse files</button></p>
+                            <p class="upload-formats">Supports: MP4, WebM, AVI, MOV, MKV (max 500MB)</p>
+                        </div>
+                        <input type="file" id="videoInput" accept=".mp4,.webm,.avi,.mov,.mkv" hidden>
+                    </div>
+                    
+                    <!-- Upload Progress -->
+                    <div class="upload-progress hidden" id="uploadProgress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill"></div>
+                        </div>
+                        <p class="progress-text" id="progressText">Uploading... 0%</p>
+                    </div>
+
+                    <!-- Video Preview -->
+                    <div class="video-preview hidden" id="videoPreview">
+                        <img class="preview-thumbnail" id="previewThumbnail" alt="Video thumbnail">
+                        <div class="preview-info">
+                            <h3 id="previewName">video.mp4</h3>
+                            <p id="previewSize">0 MB</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Detection Configuration -->
+            <section class="config-section card">
+                <div class="card__body">
+                    <h2>Event Detection Configuration</h2>
+                    <form class="config-form" id="configForm">
+                        <div class="form-group">
+                            <label for="eventDescription" class="form-label">Event to Detect</label>
+                            <input type="text" id="eventDescription" class="form-control" placeholder="e.g., person walking, car passing, door opening" required>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="sensitivity" class="form-label">Detection Sensitivity</label>
+                                <select id="sensitivity" class="form-control">
+                                    <option value="low">Low</option>
+                                    <option value="medium" selected>Medium</option>
+                                    <option value="high">High</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="confidenceThreshold" class="form-label">Confidence Threshold: <span id="confidenceValue">75</span>%</label>
+                                <input type="range" id="confidenceThreshold" class="form-control" min="0" max="100" value="75">
+                            </div>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn--primary" id="startDetection" disabled>Start Detection</button>
+                            <button type="button" class="btn btn--secondary" id="clearForm">Clear Form</button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Video Player and Results Container -->
+            <div class="player-results-container">
+                <!-- Video Player Section -->
+                <section class="player-section card hidden" id="playerSection">
+                    <div class="card__body">
+                        <h2>Video Player</h2>
+                        <div class="video-container">
+                            <video id="videoPlayer" class="video-player" controls>
+                                Your browser does not support the video tag.
+                            </video>
+                            <div class="event-markers" id="eventMarkers"></div>
+                        </div>
+                        <div class="player-info">
+                            <span class="current-time" id="currentTime">00:00</span>
+                            <span class="duration" id="duration">00:00</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Results Section -->
+                <section class="results-section card hidden" id="resultsSection">
+                    <div class="card__body">
+                        <div class="results-header">
+                            <h2>Detection Results</h2>
+                            <div class="results-actions">
+                                <button class="btn btn--sm btn--outline" id="exportResults">Export Results</button>
+                                <button class="btn btn--sm btn--secondary" id="filterResults">Filter</button>
+                            </div>
+                        </div>
+                        
+                        <div class="results-filter hidden" id="resultsFilter">
+                            <label for="minConfidence" class="form-label">Minimum Confidence: <span id="minConfidenceValue">0</span>%</label>
+                            <input type="range" id="minConfidence" class="form-control" min="0" max="100" value="0">
+                        </div>
+                        
+                        <div class="results-list" id="resultsList">
+                            <!-- Results will be populated here -->
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Processing Status -->
+            <div class="processing-modal hidden" id="processingModal">
+                <div class="processing-content">
+                    <div class="processing-animation">
+                        <div class="spinner"></div>
+                    </div>
+                    <h3>Processing Video...</h3>
+                    <p>AI is analyzing your video for events</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="processingProgress"></div>
+                    </div>
+                    <p class="progress-text" id="processingText">0%</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Toast Notifications -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>
