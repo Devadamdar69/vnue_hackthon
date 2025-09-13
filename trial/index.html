@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Video Summarizer</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            text-align: center;
+            color: white;
+        }
+        .upload-form {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            color: #333;
+        }
+        .file-input {
+            margin: 1rem 0;
+            padding: 1rem;
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        .btn {
+            background: #4CAF50;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+        .btn:hover {
+            background: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🤖 AI Video Summarizer</h1>
+        <p>Upload a video and get an intelligent summary combining audio transcription and visual analysis</p>
+
+        <div class="upload-form">
+            <h2>Upload Your Video</h2>
+            <form action="/upload" method="post" enctype="multipart/form-data">
+                <div class="file-input">
+                    <input type="file" name="video" accept="video/*" required>
+                    <p>Select a video file (MP4, AVI, MOV, MKV, WebM)</p>
+                    <p><small>Maximum file size: 100MB</small></p>
+                </div>
+                <button type="submit" class="btn">🚀 Upload & Process</button>
+            </form>
+        </div>
+
+        <div style="margin-top: 2rem; opacity: 0.8; font-size: 0.9rem;">
+            <p>🔒 Privacy-focused • 🆓 Uses free AI APIs • ⚡ No data stored permanently</p>
+        </div>
+    </div>
+</body>
+</html>
